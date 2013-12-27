@@ -1,0 +1,42 @@
+createsign:/createsign $island = >>>
+assign(@loc, pcursor()) 
+if(!is_sign_at(@loc), 
+die('Your crosshairs are not looking at a sign. Sorry.')) 
+if(is_null(get_value(concat('island.', $island))), 
+set_sign_text(@loc, array(concat('Island #:', $island), concat(color(dark_red), 'Closed'))),
+set_sign_text(@loc, array(concat('Island #:', $island), concat(color(green), 'Open'), 'Right-click the', 'sign to claim!')))
+assign(@store, concat('island.sign.', $island))
+store_value(@store, @loc)
+<<<
+
+editisland:/editisland $island $arg1 $arg2 $arg3 = clear_value(concat('island.', $island)) store_value(concat('island.', $island), concat($arg1, ' ', $arg2, ' ', $arg3)) die('Island data changed.')
+
+resetisland:/resetisland $arg1 = clear_value(concat('island.', $arg1)) die('Island ', concat(color(green), $arg1), concat(color(w), ' reset.'))
+
+resetcicounter:/resetcicounter = store_value('islands.number', 0) die('/createisland counter reset!')
+
+createislandhere:/cih = assign(@player, ploc(player())) msg(@player) sudo(/createisland @player) die('Island created at your feet.')
+
+createisland:/createisland $arg1 = store_value(concat('island.', $arg1), ploc()) die('Open island created.') \
+assign(@loc, get_value(concat('island.sign.', $arg1))) \
+set_sign_text(@loc, array(concat('Island #:', $arg1), concat(color(green), 'Open'), 'Right-click the', 'sign to claim!')) 
+
+listtown:/listtown $arg1 = die(get_values(concat('island.', $arg1)))
+
+gettown:/gettown = >>>
+assign(@isnum, 
+get_value('island.number')) 
+msg(@isnum) 
+assign(@isnum, add(@isnum, '1')) 
+msg(@isnum) 
+clear_value('island.number') 
+store_value('island.number', @isnum) 
+assign(@var, get_value(concat('island.', @isnum))) 
+if(null != get_value(concat('island.player.', player())), msg('You need a island!'),  die('You already have an island!')) 
+sudo(/tppos @var) 
+store_value(concat('island.player.', player()), @isnum) 
+<<<
+
+createisland:/createisland2 $arg1 $arg2 $arg3 $arg4 = store_value(concat('island.', $arg1), concat($arg2, ' ', $arg3, ' ', $arg4)) die('Open island created.') \
+assign(@loc, get_value(concat('island.sign.', $arg1))) \
+set_sign_text(@loc, array(concat('Island #:', $arg1), concat(color(green), 'Open'), 'Right-click the', 'sign to claim!')) 
