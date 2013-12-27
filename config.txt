@@ -1,3 +1,24 @@
+deleteplayer:/deleteplayer $player = clear_value(concat('island.player.', $player)) die(sconcat($player, 'deleted from the records!'))
+
+checksign:/checksign = >>>
+assign(@loc, pcursor()) 
+if(!is_sign_at(@loc), 
+die('Your crosshairs are not looking at a sign. Sorry.')) 
+assign(@sign, get_sign_text(@loc)[1])
+die(@sign)
+<<<
+
+massmaint:/massmaint $arg1 $arg2 = >>> assign(@c, array(gold, white))
+for(assign(@i, 1), lte(@i, $arg1), inc(@i), 
+assign(@loc, get_value(concat('island.sign.', @i))) 
+set_sign_text(@loc, array(concat('Island #:', @i), concat(color(@c[0]), 'Maintenance'), concat(color(@c[1]), 'Mode!'), concat(color(dark_blue), concat('Error ID: ', $arg2)))))
+<<<
+
+signmaint:/signmaint $arg1 $arg2 = >>> assign(@c, gold)
+assign(@loc, get_value(concat('island.sign.', $arg1))) 
+set_sign_text(@loc, array(concat('Island #:', $arg1), concat(color(@c), 'Under'), concat(color(@c), 'Maintenance!'), concat(color(dark_blue), concat('Error ID: ', $arg2))))
+<<<
+
 createsign:/createsign $island = >>>
 assign(@loc, pcursor()) 
 if(!is_sign_at(@loc), 
